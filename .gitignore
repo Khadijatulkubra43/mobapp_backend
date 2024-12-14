@@ -1,0 +1,8 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+
+media/
+data/shape_predictor_68_face_landmarks.dat
+db.sqlite3
