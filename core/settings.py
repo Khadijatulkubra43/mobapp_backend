@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'user',
     'api',
 
     'rest_framework',
@@ -49,6 +50,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'dj_rest_auth.registration',  # Enables registration endpoints
 ]
+
+AUTH_USER_MODEL = 'user.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -143,7 +146,6 @@ ACCOUNT_AUTHENTICATION_METHOD = "username"
 ACCOUNT_EMAIL_REQUIRED = False
 
 # settings.py
-# REST_AUTH_REGISTER_SERIALIZER = 'api.serializers.CustomRegisterSerializer'
 REST_AUTH = {
     'REGISTER_SERIALIZER': 'api.serializers.CustomRegisterSerializer'
 }
