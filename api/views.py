@@ -115,6 +115,5 @@ class CustomRegisterView(APIView):
             }, status=status.HTTP_204_NO_CONTENT)
 
         # Return error response with detailed validation messages
-        return Response({
-            "errors": serializer.errors
-        }, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors
+        , status=status.HTTP_400_BAD_REQUEST)
