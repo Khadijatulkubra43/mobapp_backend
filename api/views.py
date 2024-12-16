@@ -3,7 +3,6 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.parsers import FileUploadParser
 from django.core.files.storage import default_storage
 from django.conf import settings
 import os
@@ -11,6 +10,7 @@ import cv2
 import numpy as np
 from .apply_makup_script import apply_makeup, calculate_look_score
 from .models import looks, current_look_indices
+from .serializers import CustomRegisterSerializer
 
 class IsLoggedin(APIView):
     permission_classes = [IsAuthenticated]
@@ -96,3 +96,25 @@ class ImageUploadView(APIView):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class CustomRegisterView(APIView):
+    """
+    Custom registration view to display proper validation errors in the response.
+    """
+    permission_classes = [AllowAny]
+    serializer_class = CustomRegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        # Instantiate the serializer with incoming request data
+        serializer = self.serializer_class(data=request.data)
+
+        # Validate the serializer
+        if serializer.is_valid():
+            user = serializer.save(request)  # Save user
+            return Response({
+            }, status=status.HTTP_204_NO_CONTENT)
+
+        # Return error response with detailed validation messages
+        return Response({
+            "errors": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)

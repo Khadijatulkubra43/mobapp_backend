@@ -9,6 +9,7 @@ class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     username = serializers.CharField(required=True, max_length=150)
+    email = serializers.EmailField(required=False, allow_blank=True)  # Allow blank email
 
     def validate_username(self, value):
         # Check for spaces or disallowed characters
@@ -29,6 +30,11 @@ class CustomRegisterSerializer(RegisterSerializer):
         # Set first_name and last_name
         user.first_name = self.validated_data.get('first_name', '')
         user.last_name = self.validated_data.get('last_name', '')
+        
+        # Allow blank email and handle appropriately
+        email = self.validated_data.get('email', '')
+        if email:
+            user.email = email
         
         # Save the user instance with updated fields
         user.save()
